@@ -18,7 +18,7 @@ public class EnterpriseController {
 
   private final EnterpriseService enterpriseService;
 
-  @GetMapping("/")
+  @GetMapping
   public List<Enterprise> getAllEnterprises() {
     return enterpriseService.getAllEnterprises();
   }

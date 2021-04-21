@@ -40,7 +40,6 @@ public class Enterprise extends AbstractEntity {
     this.name = name;
     this.fantasyName = fantasyName;
     this.cnpj = cnpj;
-    this.account = account;
   }
 
   @Override
