@@ -1,6 +1,6 @@
 package com.neemiasgabriel.processpayroll.service;
 
-import com.neemiasgabriel.processpayroll.dtos.EnterpriseDto;
+import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
@@ -70,18 +70,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
   @Override
   public List<EnterpriseDto> getAllEnterprises() {
-    return enterpriseRepository.findAll().stream()
-      .map(ent -> {
-
-        EnterpriseDto enterprise = new EnterpriseDto(ent.getId(),
-          ent.getName(),
-          ent.getFantasyName(),
-          ent.getCnpj(),
-          ent.getEmail(),
-          ent.getAccountBalance());
-
-        return enterprise;
-      }).collect(Collectors.toList());
+    return enterpriseRepository.findAllByProjectedDto();
   }
 
   @Override

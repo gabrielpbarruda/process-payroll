@@ -1,7 +1,6 @@
-package com.neemiasgabriel.processpayroll.dtos;
+package com.neemiasgabriel.processpayroll.dto;
 
 import com.neemiasgabriel.processpayroll.model.Employee;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

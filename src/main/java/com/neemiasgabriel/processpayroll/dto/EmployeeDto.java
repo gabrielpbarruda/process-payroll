@@ -1,4 +1,4 @@
-package com.neemiasgabriel.processpayroll.dtos;
+package com.neemiasgabriel.processpayroll.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

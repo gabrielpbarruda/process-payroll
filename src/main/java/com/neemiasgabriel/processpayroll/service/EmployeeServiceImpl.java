@@ -1,5 +1,7 @@
 package com.neemiasgabriel.processpayroll.service;
 
+import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
+import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
 import com.neemiasgabriel.processpayroll.repository.EmployeeRepository;
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,5 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     return employee.isPresent()
       ? employee.get().getAccountBalance()
       : null;
+  }
+
+  @Override
+  public Set<EmployeeDto> getAllByEnterpriseId(Long enterpriseId) {
+    return employeeRepository.findallProjectedByEnterpriseId(enterpriseId);
   }
 }

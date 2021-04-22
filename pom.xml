@@ -23,19 +23,6 @@
     <docker.buildArg.JAR_FILE>${project.build.finalName}.jar</docker.buildArg.JAR_FILE>
   </properties>
 
-  <profiles>
-    <profile>
-      <id>dev</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <build.type>-SNAPSHOT</build.type>
-        <spring.profile>dev</spring.profile>
-      </properties>
-    </profile>
-  </profiles>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -72,7 +59,7 @@
 
   <build>
     <defaultGoal>package</defaultGoal>
-    <finalName>${project.artifactId}-${project.version}${build.type}</finalName>
+    <finalName>${project.artifactId}-${project.version}</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -110,7 +97,7 @@
                 <dockerFileDir>${project.basedir}</dockerFileDir>
                 <nocache>true</nocache>
                 <tags>
-                  <tag>${project.version}${build.type}</tag>
+                  <tag>${project.version}</tag>
                 </tags>
               </build>
             </image>

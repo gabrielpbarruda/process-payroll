@@ -1,6 +1,6 @@
 package com.neemiasgabriel.processpayroll.controller;
 
-import com.neemiasgabriel.processpayroll.dtos.EnterpriseDto;
+import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.service.EnterpriseService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/enterprise")
+@RequestMapping("/api/enterprises")
 @RequiredArgsConstructor
 public class EnterpriseController {
 

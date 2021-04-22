@@ -40,7 +40,7 @@ public class Employee extends AbstractEntity {
   @ManyToOne
   private Enterprise enterprise;
 
-  @Column(name = "enterprise_id")
+  @Column(name = "enterprise_id", insertable = false, updatable = false)
   private Long enterpriseId;
 
   public Employee(String name, String cpf, Date birthday, String email) {
