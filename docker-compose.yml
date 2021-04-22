@@ -9,14 +9,14 @@ services:
       POSTGRES_USER: payroll
       POSTGRES_PASSWORD: apasswordthatnobodywilleverremember
     ports:
-    - 6000:5432/tcp
+      - 6000:5432/tcp
     volumes:
       - payregister:/var/lib/postgresql/data
   registerapp:
     image: neemiasgabriel/process-payroll:latest
     container_name: registerapp
     ports:
-    - 8082:8081/tcp
+      - 8082:8081/tcp
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/registration
       SPRING_DATASOURCE_USERNAME: payroll
