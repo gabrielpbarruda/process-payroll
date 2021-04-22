@@ -3,7 +3,6 @@ package com.neemiasgabriel.processpayroll.controller;
 import com.neemiasgabriel.processpayroll.dtos.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
-import com.neemiasgabriel.processpayroll.model.Enterprise;
 import com.neemiasgabriel.processpayroll.service.EnterpriseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,5 +46,13 @@ public class EnterpriseController {
   @GetMapping("/getBalance/{id}")
   public Double getBalance(@PathVariable("id") Long enterpriseId) {
     return enterpriseService.getBalanceById(enterpriseId);
+  }
+
+  @GetMapping("/getEnterprise/{id}")
+  public ResponseEntity<Object> getById(@PathVariable("id") Long enterpriseId) {
+    EnterpriseDto dto = enterpriseService.getById(enterpriseId);
+    return dto != null
+      ? new ResponseEntity<Object>(dto, HttpStatus.OK)
+      : new ResponseEntity<Object>("Enterprise not found", HttpStatus.OK);
   }
 }

@@ -24,6 +24,15 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   private final EnterpriseRepository enterpriseRepository;
 
   @Override
+  public EnterpriseDto getById(Long id) {
+    Enterprise e = enterpriseRepository.findById(id).get();
+    EnterpriseDto eDto = new EnterpriseDto(e.getId(), e.getName(), e.getFantasyName(), e.getEmail(), e.getCnpj(), e.getAccountBalance());
+    eDto.setEmployees(e.getEmployees());
+
+    return eDto;
+  }
+
+  @Override
   public void register(EnterpriseDto enterprise) throws PatternNotMatcheException {
     if (validateEnterpriseRegister(enterprise)) {
       enterpriseRepository.save(setFields(enterprise));
