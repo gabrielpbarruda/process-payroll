@@ -1,5 +1,6 @@
 package com.neemiasgabriel.processpayroll.controller;
 
+import com.neemiasgabriel.processpayroll.dtos.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Enterprise;
@@ -19,7 +20,7 @@ public class EnterpriseController {
   private final EnterpriseService enterpriseService;
 
   @GetMapping
-  public List<Enterprise> getAllEnterprises() {
+  public List<EnterpriseDto> getAllEnterprises() {
     return enterpriseService.getAllEnterprises();
   }
 
@@ -34,7 +35,7 @@ public class EnterpriseController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<Object> registerEnterprise(@RequestBody Enterprise enterprise) {
+  public ResponseEntity<Object> registerEnterprise(@RequestBody EnterpriseDto enterprise) {
     try {
       enterpriseService.register(enterprise);
       return new ResponseEntity<Object>("Enterprise registered with success",HttpStatus.OK);

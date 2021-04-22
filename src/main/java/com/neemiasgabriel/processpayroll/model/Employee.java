@@ -31,16 +31,17 @@ public class Employee extends AbstractEntity {
   @Column(nullable = false, unique = true)
   private String email;
 
-  @OneToMany(fetch = FetchType.EAGER)
-  @Fetch(FetchMode.SUBSELECT)
-  @JoinColumn(name = "EMPLOYEE_ID")
-  private List<Account> account;
+  @Column(columnDefinition = "real default 0.0")
+  private Double accountBalance;
 
   @Column(columnDefinition = "real default 0.0")
   private Double wage;
 
   @ManyToOne
   private Enterprise enterprise;
+
+  @Column(name = "enterprise_id")
+  private Long enterpriseId;
 
   public Employee(String name, String cpf, Date birthday, String email) {
     this.name = name;

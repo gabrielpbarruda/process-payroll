@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       POSTGRES_DB: registration
-      POSTGRES_USER: somapay
+      POSTGRES_USER: payroll
       POSTGRES_PASSWORD: apasswordthatnobodywilleverremember
     ports:
       - 6000:5432
@@ -13,7 +13,7 @@ services:
     - payregister:/var/lib/postgresql/data
   registerapp:
     build: .
-    image: somapay_registerapp
+    image: process-payroll
     ports:
       - 8080:8080/tcp
 
@@ -21,4 +21,4 @@ volumes:
   payregister:
     external: false
 
-#docker run --name db -e POSTGRES_DB=registration -e POSTGRES_USER=somapay -e POSTGRES_PASSWORD=apasswordthatnobodywilleverremember -d -p 6000:5432 postgres:11
+#docker run --name db -e POSTGRES_DB=registration -e POSTGRES_USER=payroll -e POSTGRES_PASSWORD=apasswordthatnobodywilleverremember -d -p 6000:5432 postgres:11
