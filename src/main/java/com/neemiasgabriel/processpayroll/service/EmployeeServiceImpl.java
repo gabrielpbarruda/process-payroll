@@ -1,5 +1,7 @@
 package com.neemiasgabriel.processpayroll.service;
 
+import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
+import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
 import com.neemiasgabriel.processpayroll.repository.EmployeeRepository;
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,16 +20,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public void register(Employee employee) throws PatternNotMatcheException {
-    if (employee != null) {
-      Pattern pattern = Pattern.compile("^d{3}.d{3}.d{3}-d{2}$");
-      Matcher matcher = pattern.matcher(employee.getCpf());
-
-      if (matcher.matches()) {
-        employeeRepository.save(employee);
-      } else {
-        throw new PatternNotMatcheException("CPF pattern does not matche with the requirements");
-      }
+    if (validateEmpolyeeRegister(employee)) {
+      employeeRepository.save(employee);
+    } else {
+      throw new PatternNotMatcheException("CPF pattern does not match with the requirements");
     }
+  }
+
+  private boolean validateEmpolyeeRegister(Employee e) {
+    if (e != null) {
+      Pattern pattern = Pattern.compile("^d{3}.d{3}.d{3}-d{2}$");
+      Matcher matcher = pattern.matcher(e.getCpf());
+
+      return matcher.matches() && !e.getName().isEmpty() && !e.getCpf().isEmpty() && !e.getEmail().isEmpty() && e.getBirthday() != null;
+    }
+
+    return false;
   }
 
   @Override
@@ -34,7 +43,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     Optional<Employee> employee = employeeRepository.findById(employeeId);
 
     return employee.isPresent()
-      ? employee.get().getAccount().get(0).getBalance()
+      ? employee.get().getAccountBalance()
       : null;
+  }
+
+  @Override
+  public Set<EmployeeDto> getAllByEnterpriseId(Long enterpriseId) {
+    return employeeRepository.findallProjectedByEnterpriseId(enterpriseId);
   }
 }

@@ -1,5 +1,6 @@
 package com.neemiasgabriel.processpayroll.service;
 
+import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,17 +24,39 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   private final EnterpriseRepository enterpriseRepository;
 
   @Override
-  public void register(Enterprise enterprise) throws PatternNotMatcheException {
-    if (enterprise != null) {
-      Pattern pattern = Pattern.compile("^d{2}.d{3}.d{3}/d{4}-d{2}$");
-      Matcher matcher = pattern.matcher(enterprise.getCnpj());
+  public EnterpriseDto getById(Long id) {
+    Enterprise e = enterpriseRepository.findById(id).get();
+    EnterpriseDto eDto = new EnterpriseDto(e.getId(), e.getName(), e.getFantasyName(), e.getEmail(), e.getCnpj(), e.getAccountBalance());
+    eDto.setEmployees(e.getEmployees());
 
-      if (matcher.matches()) {
-        enterpriseRepository.save(enterprise);
-      } else {
-        throw new PatternNotMatcheException("CNPJ pattern does not matche with the requirements");
-      }
+    return eDto;
+  }
+
+  @Override
+  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException {
+    if (validateEnterpriseRegister(enterprise)) {
+      enterpriseRepository.save(setFields(enterprise));
+    } else {
+      throw new PatternNotMatcheException("CNPJ pattern does not matche with the requirements");
     }
+  }
+
+  private boolean validateEnterpriseRegister(EnterpriseDto e) {
+    if (e != null) {
+      Pattern pattern = Pattern.compile("^d{2}.d{3}.d{3}/d{4}-d{2}$");
+      Matcher matcher = pattern.matcher(e.getCnpj());
+
+      return matcher.matches() && !e.getName().isEmpty() && !e.getCnpj().isEmpty() && !e.getEmail().isEmpty();
+    }
+
+    return false;
+  }
+
+  private Enterprise setFields(EnterpriseDto dto) {
+    Enterprise enterprise = new Enterprise(dto.getName(), dto.getFantasyName(), dto.getCnpj(), dto.getEmail());
+    enterprise.setAccountBalance(dto.getAccountBalance());
+
+    return enterprise;
   }
 
   @Override
@@ -40,13 +64,13 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     Optional<Enterprise> enterprise = enterpriseRepository.findById(enterpriseId);
 
     return enterprise.isPresent()
-      ? enterprise.get().getAccount().get(0).getBalance()
+      ? enterprise.get().getAccountBalance()
       : null;
   }
 
   @Override
-  public List<Enterprise> getAllEnterprises() {
-    return enterpriseRepository.findAll();
+  public List<EnterpriseDto> getAllEnterprises() {
+    return enterpriseRepository.findAllByProjectedDto();
   }
 
   @Override
@@ -60,13 +84,13 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
       Double totalWage = employees.stream().map(emp -> emp.getWage()).reduce(0.0, Double::sum);
       Double reducedBalance = totalWage + (totalWage * 0.038);
-      Double balance = enterprise.getAccount().get(0).getBalance();
+      Double balance = enterprise.getAccountBalance();
 
-      enterprise.getAccount().get(0).setBalance(balance - reducedBalance);
+      enterprise.setAccountBalance(balance - reducedBalance);
 
       employees.forEach(emp -> {
-        Double actualBalance = emp.getAccount().get(0).getBalance();
-        emp.getAccount().get(0).setBalance(actualBalance + emp.getWage());
+        Double actualBalance = emp.getAccountBalance();
+        emp.setAccountBalance(actualBalance + emp.getWage());
       });
     } else {
       throw new DataNotFoundException("It was not possible to find the enterprise. The payroll will not be processed");
