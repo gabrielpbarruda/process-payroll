@@ -1,31 +1,28 @@
 version: '3'
 services:
-  db:
+  postgres:
     image: postgres:11
-    container_name: db
+    container_name: postgres
     restart: always
     environment:
-      - POSTGRES_DB=registration
-      - POSTGRES_USER=payroll
-      - POSTGRES_PASSWORD=apasswordthatnobodywilleverremember
+      POSTGRES_DB: registration
+      POSTGRES_USER: payroll
+      POSTGRES_PASSWORD: apasswordthatnobodywilleverremember
     ports:
-      - "6000:5432/tcp"
+    - 6000:5432/tcp
     volumes:
       - payregister:/var/lib/postgresql/data
   registerapp:
     image: neemiasgabriel/process-payroll:latest
     container_name: registerapp
     ports:
-      - "8081:8081/tcp"
+    - 8082:8081/tcp
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:6000/registration
-      - SPRING_DATASOURCE_USERNAME=payroll
-      - SPRING_DATASOURCE_PASSWORD=apasswordthatnobodywilleverremember
-#      - POSTGRES_DB=registration
-#      - POSTGRES_USER=payroll
-#      - POSTGRES_PASSWORD=apasswordthatnobodywilleverremember
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/registration
+      SPRING_DATASOURCE_USERNAME: payroll
+      SPRING_DATASOURCE_PASSWORD: apasswordthatnobodywilleverremember
 
 volumes:
   payregister:
 
-#docker run --name dbTest -e POSTGRES_DB=registration -e POSTGRES_USER=payroll -e POSTGRES_PASSWORD=apasswordthatnobodywilleverremember -d -p 5432:5432 postgres:11
+#docker run --name db -e POSTGRES_DB=registration -e POSTGRES_USER=payroll -e POSTGRES_PASSWORD=apasswordthatnobodywilleverremember -d -p 5432:5432 postgres:11
