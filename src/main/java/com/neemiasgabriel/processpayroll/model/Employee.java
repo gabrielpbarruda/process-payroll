@@ -50,6 +50,14 @@ public class Employee extends AbstractEntity {
     this.email = email;
   }
 
+  public Employee(String name, String cpf, Date birthday, String email, Double wage) {
+    this.name = name;
+    this.cpf = cpf;
+    this.birthday = birthday;
+    this.email = email;
+    this.wage = wage;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(name, cpf, email);

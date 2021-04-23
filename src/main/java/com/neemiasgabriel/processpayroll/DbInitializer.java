@@ -45,7 +45,7 @@ public class DbInitializer implements CommandLineRunner {
   private void initEnterprises() {
     enterpriseRepository.deleteAll();
 
-    Enterprise edson = new Enterprise("Edson Arandes", "Side By Side", "12300000/0001-70", "sydebyside@email.com");
+    Enterprise edson = new Enterprise("Edson Arandes", "Side By Side", "12.300.000/0001-70", "sydebyside@email.com");
     edson.setEmployees(Set.of(
       employeeRepository.findEmployeeByName("Taffarel").get(),
       employeeRepository.findEmployeeByName("Dunga").get()
@@ -53,11 +53,11 @@ public class DbInitializer implements CommandLineRunner {
 
     edson.setAccountBalance(100000.0);
 
-    Enterprise john = new Enterprise("Joao das Neves", "Watch Patrol", "32100000/0001-71", "watch@email.com");
+    Enterprise john = new Enterprise("Joao das Neves", "Watch Patrol", "32.100.000/0001-71", "watch@email.com");
     john.getEmployees().add(employeeRepository.findEmployeeByName("Romario").get());
     john.setAccountBalance(-1000.0);
 
-    Enterprise mussum = new Enterprise("Mussum", "Afilcs", "32140000/0001-82", "afilks@email.com");
+    Enterprise mussum = new Enterprise("Mussum", "Afilks", "32.140.000/0001-82", "afilks@email.com");
     mussum.getEmployees().add(employeeRepository.findEmployeeByName("Rivaldo").get());
     mussum.setAccountBalance(20000.0);
 

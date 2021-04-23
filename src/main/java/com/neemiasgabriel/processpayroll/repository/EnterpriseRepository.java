@@ -17,4 +17,6 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
     "FROM Enterprise e")
   List<EnterpriseDto> findAllByProjectedDto();
 
+  boolean existsByCnpj(String cnpj);
+
 }

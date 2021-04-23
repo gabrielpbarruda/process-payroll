@@ -1,6 +1,7 @@
 package com.neemiasgabriel.processpayroll.service;
 
 import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
+import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
@@ -15,7 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,17 +33,21 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   }
 
   @Override
-  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException {
+  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException {
     if (validateEnterpriseRegister(enterprise)) {
+      if (enterpriseRepository.existsByCnpj(enterprise.getCnpj())) {
+        throw new DataAlreadyExistsException("CNPJ already exists");
+      }
+
       enterpriseRepository.save(setFields(enterprise));
     } else {
-      throw new PatternNotMatcheException("CNPJ pattern does not matche with the requirements");
+      throw new PatternNotMatcheException("CNPJ pattern does not match with the requirements");
     }
   }
 
   private boolean validateEnterpriseRegister(EnterpriseDto e) {
     if (e != null) {
-      Pattern pattern = Pattern.compile("^d{2}.d{3}.d{3}/d{4}-d{2}$");
+      Pattern pattern = Pattern.compile("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$");
       Matcher matcher = pattern.matcher(e.getCnpj());
 
       return matcher.matches() && !e.getName().isEmpty() && !e.getCnpj().isEmpty() && !e.getEmail().isEmpty();

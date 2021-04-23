@@ -1,0 +1,20 @@
+project:
+  version: @version@
+
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:registration}
+    username: ${PGUSER:payroll}
+    password: ${PGPASSWORD:apasswordthatnobodywilleverremember}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      show-sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true

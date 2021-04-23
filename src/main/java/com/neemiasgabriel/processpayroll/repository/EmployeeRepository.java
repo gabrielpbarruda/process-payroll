@@ -22,4 +22,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     "WHERE e.enterpriseId = :enterpriseId"
   )
   Set<EmployeeDto> findallProjectedByEnterpriseId(@Param("enterpriseId") Long enterpriseId);
+
+  boolean existsByCpf(String cpf);
+
+  boolean existsByEmail(String email);
 }

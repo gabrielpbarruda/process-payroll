@@ -1,6 +1,7 @@
 package com.neemiasgabriel.processpayroll.controller;
 
 import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
+import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.service.EnterpriseService;
@@ -38,7 +39,7 @@ public class EnterpriseController {
     try {
       enterpriseService.register(enterprise);
       return new ResponseEntity<Object>("Enterprise registered with success",HttpStatus.OK);
-    } catch (PatternNotMatcheException e) {
+    } catch (PatternNotMatcheException | DataAlreadyExistsException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
