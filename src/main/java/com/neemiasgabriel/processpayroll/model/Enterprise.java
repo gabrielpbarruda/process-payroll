@@ -28,18 +28,20 @@ public class Enterprise extends AbstractEntity {
   @Column(nullable = false, unique = true)
   private String cnpj;
 
-  @OneToMany(fetch = FetchType.EAGER)
-  @Fetch(FetchMode.SUBSELECT)
-  @JoinColumn(name = "ENTERPRISE_ID")
-  private List<Account> account;
+  @Column(nullable = false)
+  private String email;
+
+  @Column(columnDefinition = "real default 0.0")
+  private Double accountBalance;
 
   @OneToMany
   private Set<Employee> employees = new HashSet<>();
 
-  public Enterprise(String name, String fantasyName, String cnpj) {
+  public Enterprise(String name, String fantasyName, String cnpj, String email) {
     this.name = name;
     this.fantasyName = fantasyName;
     this.cnpj = cnpj;
+    this.email = email;
   }
 
   @Override

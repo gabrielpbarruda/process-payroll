@@ -11,6 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableCaching
 @EntityScan(basePackages = {"com.neemiasgabriel.processpayroll.model"})
 @EnableJpaRepositories(basePackages = {"com.neemiasgabriel.processpayroll.repository"})
-@ComponentScan(basePackages = {"com.neemiasgabriel.processpayroll.utility", "com.neemiasgabriel.processpayroll.service"})
+@ComponentScan(basePackages = {"com.neemiasgabriel.processpayroll.service"})
 public class CustomWebMvcConfigurerAdapter implements WebMvcConfigurer {
 }

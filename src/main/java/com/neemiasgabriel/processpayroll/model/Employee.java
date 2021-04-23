@@ -31,10 +31,8 @@ public class Employee extends AbstractEntity {
   @Column(nullable = false, unique = true)
   private String email;
 
-  @OneToMany(fetch = FetchType.EAGER)
-  @Fetch(FetchMode.SUBSELECT)
-  @JoinColumn(name = "EMPLOYEE_ID")
-  private List<Account> account;
+  @Column(columnDefinition = "real default 0.0")
+  private Double accountBalance;
 
   @Column(columnDefinition = "real default 0.0")
   private Double wage;
@@ -42,11 +40,22 @@ public class Employee extends AbstractEntity {
   @ManyToOne
   private Enterprise enterprise;
 
+  @Column(name = "enterprise_id", insertable = false, updatable = false)
+  private Long enterpriseId;
+
   public Employee(String name, String cpf, Date birthday, String email) {
     this.name = name;
     this.cpf = cpf;
     this.birthday = birthday;
     this.email = email;
+  }
+
+  public Employee(String name, String cpf, Date birthday, String email, Double wage) {
+    this.name = name;
+    this.cpf = cpf;
+    this.birthday = birthday;
+    this.email = email;
+    this.wage = wage;
   }
 
   @Override
