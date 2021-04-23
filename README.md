@@ -1,22 +1,55 @@
 # Getting Started
 
+### Payroll Management
+
+The system enables the user to register new enterprises and new employees and run payrolls in
+conformation with pre-defined requirements
+
 ### Reference Documentation
 
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.4.5/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.4.5/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#boot-features-developing-web-applications)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#using-boot-devtools)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+To run the application do:
+1. Download this repo
+2. Inside the folder run mvn clean package
+3. Run ```docker compose up``` (for recent versions of docker), or ```docker-compose up``` inside the terminal
+4. Execute queries using a app like [Insominia](https://insomnia.rest/download) or [Postman](https://www.postman.com/downloads/)
 
 ### Guides
 
-The following guides illustrate how to use some features concretely:
+There are two APIs: enterprises and employees
+When the application is running, you can access the data from
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+```localhost:8081/api/enterprises``` or ```localhost:8081/api/employees```
 
+Running those end points, the system returns a list of enterprises/employees pre-defined inside the database.
+
+* To register an enterprise
+
+1. Call ```localhost:8081/api/enterprises/register```
+2. Switch the mapping to **Post**
+3. Create an object whith at least:
+``` json
+{
+    "name": "Joao das Neves",
+    "fantasyName": "Watch Patrol",
+    "email": "watch@email.com",
+    "cnpj": "32.100.000/0001-71"
+}
+```
+
+**OBS**: The fields **email** and **cnpj** must be unique. In case of repetition, the system throws an error message
+
+* To register an employee
+
+1. Call ```localhost:8081/api/employees/register```
+2. Switch the mapping to **Post**
+3. Create an object whith at least:
+``` json
+{
+    "name": "Romario",
+    "cpf": "213.564.879-03",
+    "birthday": "1966-01-29",
+    "email": "romario@email.com",
+}
+```
+
+**OBS**: The fields **email** and **cpf** must be unique. In case of repetition, the system throws an error message
