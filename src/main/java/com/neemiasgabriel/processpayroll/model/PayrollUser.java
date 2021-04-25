@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,21 +23,30 @@ public class PayrollUser extends SimpleUser {
   @Column(nullable = false)
   private String password;
 
-  @OneToOne
-  private Enterprise enterprise;
+  @OneToMany
+  private Set<Enterprise> enterprises = Set.of();
 
-  @Column(columnDefinition = "real default 0.0")
-  private Double wage;
+  @OneToOne
+  @JoinColumn(name = "account_id")
+  private Account account;
 
   @Column(nullable = false)
   private String role;
 
-  public PayrollUser(String username, String email, String password, String cpf, Date birthday) {
+  public PayrollUser(String username, String password, String role) {
     this.username = username;
-    this.setEmail(email);
     this.password = password;
+    this.role = role;
+  }
+
+  public PayrollUser(String name, String email, String cpf, Date birthday, String username, String password) {
+    setName(name);
+    setEmail(email);
     setCpf(cpf);
-    this.setBirthday(birthday);
+    setBirthday(birthday);
+
+    this.username = username;
+    this.password = password;
   }
 
   @Override
@@ -51,7 +61,7 @@ public class PayrollUser extends SimpleUser {
 
       return this.username.equals(user.getUsername())
         && getEmail().equals(user.getEmail())
-        && this.cpf.equals(user.getCpf());
+        && getCpf().equals(user.getCpf());
     }
 
     return false;

@@ -17,7 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
   @Query(
     "SELECT DISTINCT new com.neemiasgabriel.processpayroll.dto.EmployeeDto(" +
-      "e.id, e.name, e.cpf, e.birthday, e.email, e.accountBalance, e.wage, e.enterpriseId) " +
+      "e.id, e.name, e.cpf, e.birthday, e.email, e.referenceAccount, e.referenceAgency, e.wage, e.enterpriseId) " +
     "FROM Employee e " +
     "WHERE e.enterpriseId = :enterpriseId"
   )

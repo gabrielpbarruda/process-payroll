@@ -22,14 +22,17 @@ public class Employee extends SimpleUser {
   @Column(columnDefinition = "real default 0.0")
   private Double wage;
 
+  @Column(nullable = false)
+  private String referenceAccount;
+
+  @Column(nullable = false)
+  private String referenceAgency;
+
   @Column(name = "enterprise_id", insertable = false, updatable = false)
   private Long enterpriseId;
 
   @ManyToOne
   private Enterprise enterprise;
-
-  @OneToOne
-  private Account account;
 
   public Employee(String name, String cpf, Date birthday, String email) {
     setName(name);
@@ -48,7 +51,7 @@ public class Employee extends SimpleUser {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, cpf, email);
+    return Objects.hash(getId(), getName(), getCpf(), getEmail());
   }
 
   @Override

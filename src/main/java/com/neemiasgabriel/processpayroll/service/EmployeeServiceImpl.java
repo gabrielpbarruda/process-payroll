@@ -2,6 +2,7 @@ package com.neemiasgabriel.processpayroll.service;
 
 import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
 import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
+import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
 import com.neemiasgabriel.processpayroll.repository.EmployeeRepository;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeRepository employeeRepository;
+  private final PayrollUserService payrollUserService;
 
   @Override
   public void register(EmployeeDto emp) throws PatternNotMatcheException, DataAlreadyExistsException {
@@ -54,11 +56,11 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public Double getBalanceByEmplyeeId(Long employeeId) {
+  public Double getBalanceByEmplyeeId(Long employeeId) throws DataNotFoundException {
     Optional<Employee> employee = employeeRepository.findById(employeeId);
 
     return employee.isPresent()
-      ? employee.get().getAccountBalance()
+      ? payrollUserService.getByCpf(employee.get().getCpf()).getAccount().getAccountBalance()
       : null;
   }
 
@@ -76,7 +78,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         e.getCpf(),
         e.getBirthday(),
         e.getEmail(),
-        e.getAccountBalance(),
+        e.getReferenceAccount(),
+        e.getReferenceAgency(),
         e.getWage(),
         e.getEnterpriseId()))
       .collect(Collectors.toList());

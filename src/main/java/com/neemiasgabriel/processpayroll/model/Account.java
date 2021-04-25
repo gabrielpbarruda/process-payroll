@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Getter
 @Setter
@@ -24,11 +25,17 @@ public class Account extends AbstractEntity {
   @Column(columnDefinition = "real default 0.0")
   private Double accountBalance;
 
-  @Column(name = "payroll_user_id", insertable = false, updatable = false)
-  private Long ownerId;
+  @OneToOne(mappedBy = "account")
+  private PayrollUser payrollUser;
 
   public Account(String accountNumber, String agency) {
     this.accountNumber = accountNumber;
     this.agency = agency;
+  }
+
+  public Account(String accountNumber, String agency, Double accountBalance) {
+    this.accountNumber = accountNumber;
+    this.agency = agency;
+    this.accountBalance = accountBalance;
   }
 }

@@ -14,7 +14,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @MappedSuperclass
 public class SimpleUser extends AbstractEntity {
 

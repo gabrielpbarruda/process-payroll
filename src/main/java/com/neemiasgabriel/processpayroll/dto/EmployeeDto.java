@@ -20,7 +20,9 @@ public class EmployeeDto {
 
   private final String email;
 
-  private final Double accountBalance;
+  private final String referenceAccount;
+
+  private final String referenceAgency;
 
   private final Double wage;
 
