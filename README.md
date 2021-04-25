@@ -5,15 +5,13 @@
 **Payroll Management** it is a system that enables the user to register new enterprises, new employees and run payrolls in
 conformation with pre-defined requirements
 
-### Reference Documentation
+### Guides
 
 To run the application do:
 1. Download this repo
-2. Inside the folder run mvn clean package
+2. Inside the app folder run ```mvn clean package```
 3. Run ```docker compose up``` (for recent versions of docker), or ```docker-compose up``` inside the terminal
-4. Execute queries using a app like [Insominia](https://insomnia.rest/download) or [Postman](https://www.postman.com/downloads/)
-
-### Guides
+4. Execute queries using an app like [Insominia](https://insomnia.rest/download) or [Postman](https://www.postman.com/downloads/)
 
 There are two APIs: enterprises and employees
 When the application is running, you can access the data from
