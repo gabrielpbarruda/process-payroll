@@ -38,7 +38,7 @@ public class EnterpriseController {
   public ResponseEntity<Object> registerEnterprise(@RequestBody EnterpriseDto enterprise) {
     try {
       enterpriseService.register(enterprise);
-      return new ResponseEntity<Object>("Enterprise registered with success",HttpStatus.OK);
+      return new ResponseEntity<Object>("Enterprise registered with success", HttpStatus.OK);
     } catch (PatternNotMatcheException | DataAlreadyExistsException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

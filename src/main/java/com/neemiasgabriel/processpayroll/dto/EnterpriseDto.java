@@ -1,11 +1,9 @@
 package com.neemiasgabriel.processpayroll.dto;
 
-import com.neemiasgabriel.processpayroll.model.Employee;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -24,5 +22,5 @@ public class EnterpriseDto {
 
   private final Double accountBalance;
 
-  private Set<Employee> employees = new HashSet<>();
+  private Set<EmployeeDto> employees = Set.of();
 }
