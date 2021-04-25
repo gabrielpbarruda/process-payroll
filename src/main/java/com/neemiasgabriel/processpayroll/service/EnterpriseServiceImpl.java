@@ -2,7 +2,6 @@ package com.neemiasgabriel.processpayroll.service;
 
 import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
 import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
-import com.neemiasgabriel.processpayroll.dto.PayrollUserDto;
 import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
@@ -32,20 +31,25 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   @Override
   public EnterpriseDto getById(Long id) {
     Enterprise e = enterpriseRepository.findById(id).get();
-    EnterpriseDto eDto = new EnterpriseDto(e.getId(), e.getName(), e.getFantasyName(), e.getEmail(), e.getCnpj(), e.getAccountBalance());
-    eDto.setEmployees(convertEmployees(e));
+    EnterpriseDto eDto = new EnterpriseDto(e.getId(), e.getName(), e.getFantasyName(), e.getEmail(), e.getCnpj(), e.getAccountBalance(), e.getOwnerId());
+    eDto.setEmployees(convertToEmployeesDto(e));
 
     return eDto;
   }
 
   @Override
-  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException {
+  @Transactional
+  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException {
     if (validateEnterpriseRegister(enterprise)) {
       if (enterpriseRepository.existsByCnpj(enterprise.getCnpj())) {
         throw new DataAlreadyExistsException("CNPJ already exists");
       }
 
-      enterpriseRepository.save(setFields(enterprise));
+      Enterprise newEnterprise = enterpriseRepository.save(setFields(enterprise));
+      PayrollUser pu = payrollUserRepository.findById(enterprise.getPayrollUserId())
+        .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+      pu.getEnterprises().add(newEnterprise);
     } else {
       throw new PatternNotMatcheException("CNPJ pattern does not match with the requirements");
     }
@@ -63,7 +67,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   }
 
   private Enterprise setFields(EnterpriseDto dto) {
-    Enterprise enterprise = new Enterprise(dto.getName(), dto.getFantasyName(), dto.getCnpj(), dto.getEmail());
+    Enterprise enterprise = new Enterprise(dto.getName(), dto.getFantasyName(), dto.getCnpj(), dto.getEmail(), dto.getPayrollUserId());
     enterprise.setAccountBalance(dto.getAccountBalance());
 
     return enterprise;
@@ -88,10 +92,11 @@ public class EnterpriseServiceImpl implements EnterpriseService {
           ent.getFantasyName(),
           ent.getEmail(),
           ent.getCnpj(),
-          ent.getAccountBalance()
+          ent.getAccountBalance(),
+          ent.getOwnerId()
         );
 
-        enDto.setEmployees(convertEmployees(ent));
+        enDto.setEmployees(convertToEmployeesDto(ent));
 
         return enDto;
       }).collect(Collectors.toList());
@@ -124,7 +129,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
   }
 
-  public Set<EmployeeDto> convertEmployees(Enterprise ent) {
+  public Set<EmployeeDto> convertToEmployeesDto(Enterprise ent) {
     return ent.getEmployees().stream()
       .map(emp -> {
         return new EmployeeDto(

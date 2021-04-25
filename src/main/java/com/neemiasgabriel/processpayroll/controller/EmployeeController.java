@@ -23,7 +23,7 @@ public class EmployeeController {
     try {
       employeeService.register(employee);
       return new ResponseEntity<Object>("Employee registered with success", HttpStatus.OK);
-    } catch (PatternNotMatcheException | DataAlreadyExistsException e) {
+    } catch (PatternNotMatcheException | DataAlreadyExistsException | DataNotFoundException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }

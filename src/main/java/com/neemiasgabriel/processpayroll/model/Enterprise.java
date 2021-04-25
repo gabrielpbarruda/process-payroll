@@ -46,6 +46,14 @@ public class Enterprise extends AbstractEntity {
     this.email = email;
   }
 
+  public Enterprise(String name, String fantasyName, String cnpj, String email, Long ownerId) {
+    this.name = name;
+    this.fantasyName = fantasyName;
+    this.cnpj = cnpj;
+    this.email = email;
+    this.ownerId = ownerId;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(name, cnpj);
