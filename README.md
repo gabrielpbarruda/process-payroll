@@ -23,7 +23,7 @@ Running those end points, the system returns a list of enterprises/employees pre
 * To register an enterprise
 
 1. Call ```localhost:8082/api/enterprises/register```
-2. Switch the mapping to **Post**
+2. Switch the verb to **Post**
 3. Create an object whith at least:
 ``` json
 {
@@ -40,7 +40,7 @@ Running those end points, the system returns a list of enterprises/employees pre
 * To register an employee
 
 1. Call ```localhost:8082/api/employees/register```
-2. Switch the mapping to **Post**
+2. Switch the verb to **Post**
 3. Create an object whith at least:
 ``` json
 {
