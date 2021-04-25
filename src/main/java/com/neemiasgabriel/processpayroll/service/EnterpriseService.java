@@ -13,9 +13,14 @@ import java.util.Set;
 public interface EnterpriseService {
 
   EnterpriseDto getById(Long id);
-  void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException;
+
+  void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException;
+
   Double getBalanceById(Long enterpriseId);
+
   List<EnterpriseDto> getAllEnterprises();
+
   void processPayroll(Long enterpriseId) throws DataNotFoundException;
-  Set<EmployeeDto> convertEmployees(Enterprise ent);
+
+  Set<EmployeeDto> convertToEmployeesDto(Enterprise ent);
 }

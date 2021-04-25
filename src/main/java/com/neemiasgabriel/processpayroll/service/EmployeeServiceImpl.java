@@ -5,10 +5,13 @@ import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
+import com.neemiasgabriel.processpayroll.model.Enterprise;
 import com.neemiasgabriel.processpayroll.repository.EmployeeRepository;
+import com.neemiasgabriel.processpayroll.repository.EnterpriseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,9 +24,11 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeRepository employeeRepository;
   private final PayrollUserService payrollUserService;
+  private final EnterpriseRepository enterpriseRepository;
 
   @Override
-  public void register(EmployeeDto emp) throws PatternNotMatcheException, DataAlreadyExistsException {
+  @Transactional
+  public void register(EmployeeDto emp) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException {
     if (validateEmpolyeeRegister(emp)) {
       if (employeeRepository.existsByCpf(emp.getCpf())) {
         throw new DataAlreadyExistsException("CPF already exists");
@@ -33,7 +38,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new DataAlreadyExistsException("Email already exists");
       }
 
-      employeeRepository.save(new Employee(emp.getName(), emp.getCpf(), emp.getBirthday(), emp.getEmail(), emp.getWage()));
+      Employee employee = employeeRepository.save(new Employee(emp.getName(), emp.getCpf(), emp.getBirthday(), emp.getEmail(), emp.getWage()));
+      Enterprise ent = enterpriseRepository.findById(emp.getEnterpriseId())
+        .orElseThrow(() -> new DataNotFoundException("Enterprise not found"));
+
+      ent.getEmployees().add(employee);
     } else {
       throw new PatternNotMatcheException("CPF pattern does not match with the requirements");
     }
