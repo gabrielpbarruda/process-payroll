@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -36,6 +35,9 @@ public class Enterprise extends AbstractEntity {
 
   @OneToMany
   private Set<Employee> employees = new HashSet<>();
+
+  @Column(name = "payroll_user_id", insertable = false, updatable = false)
+  private Long ownerId;
 
   public Enterprise(String name, String fantasyName, String cnpj, String email) {
     this.name = name;

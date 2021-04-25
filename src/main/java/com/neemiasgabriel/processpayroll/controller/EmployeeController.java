@@ -2,6 +2,7 @@ package com.neemiasgabriel.processpayroll.controller;
 
 import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
 import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
+import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,13 @@ public class EmployeeController {
     }
   }
 
-  @GetMapping("/getBalance/{Id}")
-  public Double getBalance(@PathVariable("id") Long enterpriseId) {
-    return employeeService.getBalanceByEmplyeeId(enterpriseId);
+  @GetMapping("/getBalance/{id}")
+  public ResponseEntity<Object> getBalance(@PathVariable("id") Long id) {
+    try {
+      return new ResponseEntity<Object>(employeeService.getBalanceByEmployeeId(id), HttpStatus.OK);
+    } catch (DataNotFoundException e) {
+      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping

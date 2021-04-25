@@ -17,50 +17,41 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Employee extends AbstractEntity {
-  @Column(nullable = false)
-  private String name;
-
-  @Column(nullable = false, unique = true)
-  private String cpf;
-
-  @Column(nullable = false)
-  @Temporal(TemporalType.DATE)
-  private Date birthday;
-
-  @Column(nullable = false, unique = true)
-  private String email;
-
-  @Column(columnDefinition = "real default 0.0")
-  private Double accountBalance;
+public class Employee extends SimpleUser {
 
   @Column(columnDefinition = "real default 0.0")
   private Double wage;
 
-  @ManyToOne
-  private Enterprise enterprise;
+  @Column(nullable = false)
+  private String referenceAccount;
+
+  @Column(nullable = false)
+  private String referenceAgency;
 
   @Column(name = "enterprise_id", insertable = false, updatable = false)
   private Long enterpriseId;
 
+  @ManyToOne
+  private Enterprise enterprise;
+
   public Employee(String name, String cpf, Date birthday, String email) {
-    this.name = name;
-    this.cpf = cpf;
-    this.birthday = birthday;
-    this.email = email;
+    setName(name);
+    setCpf(cpf);
+    setBirthday(birthday);
+    setEmail(email);
   }
 
   public Employee(String name, String cpf, Date birthday, String email, Double wage) {
-    this.name = name;
-    this.cpf = cpf;
-    this.birthday = birthday;
-    this.email = email;
+    setName(name);
+    setCpf(cpf);
+    setBirthday(birthday);
+    setEmail(email);
     this.wage = wage;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, cpf, email);
+    return Objects.hash(getId(), getName(), getCpf(), getEmail());
   }
 
   @Override

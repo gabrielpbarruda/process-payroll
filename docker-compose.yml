@@ -25,4 +25,4 @@ services:
 volumes:
   payregister:
 
-#docker run --name db -e POSTGRES_DB=registration -e POSTGRES_USER=payroll -e POSTGRES_PASSWORD=apasswordthatnobodywilleverremember -d -p 5432:5432 postgres:11
+#docker run --name dbTest -e POSTGRES_DB=registration -e POSTGRES_USER=payroll -e POSTGRES_PASSWORD=apasswordthatnobodywilleverremember -d -p 5432:5432 postgres:11
