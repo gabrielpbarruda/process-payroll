@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   postgres:
     image: postgres:11
@@ -11,7 +12,7 @@ services:
     ports:
       - 6000:5432/tcp
     volumes:
-      - payregister:/var/lib/postgresql/data
+      - payrollvolume:/var/lib/postgresql/data
   registerapp:
     image: neemiasgabriel/process-payroll:latest
     container_name: registerapp
@@ -23,4 +24,4 @@ services:
       SPRING_DATASOURCE_PASSWORD: apasswordthatnobodywilleverremember
 
 volumes:
-  payregister:
+  payrollvolume:
