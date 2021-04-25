@@ -22,5 +22,8 @@ public class EnterpriseDto {
 
   private final Double accountBalance;
 
+  private final Long payrollUserId;
+
   private Set<EmployeeDto> employees = Set.of();
+
 }

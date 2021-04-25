@@ -39,7 +39,7 @@ public class EnterpriseController {
     try {
       enterpriseService.register(enterprise);
       return new ResponseEntity<Object>("Enterprise registered with success", HttpStatus.OK);
-    } catch (PatternNotMatcheException | DataAlreadyExistsException e) {
+    } catch (PatternNotMatcheException | DataAlreadyExistsException | DataNotFoundException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }

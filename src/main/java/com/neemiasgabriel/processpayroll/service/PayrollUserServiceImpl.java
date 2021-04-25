@@ -43,6 +43,11 @@ public class PayrollUserServiceImpl implements PayrollUserService {
     return convertUser(user);
   }
 
+  @Override
+  public PayrollUser getById(Long id) {
+    return repository.findById(id).orElse(null);
+  }
+
   private PayrollUserDto convertUser(PayrollUser pu) {
     PayrollUserDto puDto = new PayrollUserDto();
     Account acc = pu.getAccount();
@@ -63,9 +68,10 @@ public class PayrollUserServiceImpl implements PayrollUserService {
             ent.getFantasyName(),
             ent.getEmail(),
             ent.getCnpj(),
-            ent.getAccountBalance());
+            ent.getAccountBalance(),
+            pu.getId());
 
-          entDto.setEmployees(enterpriseService.convertEmployees(ent));
+          entDto.setEmployees(enterpriseService.convertToEmployeesDto(ent));
 
           return entDto;
         }).collect(Collectors.toSet());

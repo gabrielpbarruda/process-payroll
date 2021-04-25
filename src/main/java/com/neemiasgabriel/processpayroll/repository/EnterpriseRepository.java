@@ -14,7 +14,7 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
   @Query(
     "SELECT new com.neemiasgabriel.processpayroll.dto" +
-      ".EnterpriseDto(e.id, e.name, e.fantasyName, e.email, e.cnpj, e.accountBalance) " +
+      ".EnterpriseDto(e.id, e.name, e.fantasyName, e.email, e.cnpj, e.accountBalance, e.ownerId) " +
     "FROM Enterprise e")
   List<EnterpriseDto> findAllByProjectedDto();
 
