@@ -9,7 +9,7 @@ conformation with pre-defined requirements
 
 To run the application do:
 1. Download this repo
-2. Inside the app folder run ```mvn clean package```
+2. Inside the app folder run ```mvn clean install```
 3. Run ```docker compose up``` (for recent versions of docker), or ```docker-compose up``` inside the terminal
 4. Execute queries using an app like [Insominia](https://insomnia.rest/download) or [Postman](https://www.postman.com/downloads/)
 
