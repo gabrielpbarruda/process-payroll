@@ -56,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public Double getBalanceByEmplyeeId(Long employeeId) throws DataNotFoundException {
+  public Double getBalanceByEmployeeId(Long employeeId) throws DataNotFoundException {
     Optional<Employee> employee = employeeRepository.findById(employeeId);
 
     return employee.isPresent()

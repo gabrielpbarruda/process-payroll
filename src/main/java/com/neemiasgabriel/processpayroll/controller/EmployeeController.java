@@ -28,10 +28,10 @@ public class EmployeeController {
     }
   }
 
-  @GetMapping("/getBalance/{Id}")
-  public ResponseEntity<Object> getBalance(@PathVariable("id") Long enterpriseId) {
+  @GetMapping("/getBalance/{id}")
+  public ResponseEntity<Object> getBalance(@PathVariable("id") Long id) {
     try {
-      return new ResponseEntity<Object>(employeeService.getBalanceByEmplyeeId(enterpriseId), HttpStatus.OK);
+      return new ResponseEntity<Object>(employeeService.getBalanceByEmployeeId(id), HttpStatus.OK);
     } catch (DataNotFoundException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

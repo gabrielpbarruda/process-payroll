@@ -11,7 +11,7 @@ import java.util.Set;
 public interface EmployeeService {
   void register(EmployeeDto employee) throws PatternNotMatcheException, DataAlreadyExistsException;
 
-  Double getBalanceByEmplyeeId(Long employeeId) throws DataNotFoundException;
+  Double getBalanceByEmployeeId(Long employeeId) throws DataNotFoundException;
 
   Set<EmployeeDto> getAllByEnterpriseId(Long enterpriseId);
 
