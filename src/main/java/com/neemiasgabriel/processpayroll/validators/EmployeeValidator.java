@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class EmployeeValidator {
-  public boolean validateEmpolyeeRegister(EmployeeDto e) throws MissingDataException {
+  public boolean validateEmployeeRegister(EmployeeDto e) throws MissingDataException {
     List<String> errors = new ArrayList<>();
 
     if (e != null) {
