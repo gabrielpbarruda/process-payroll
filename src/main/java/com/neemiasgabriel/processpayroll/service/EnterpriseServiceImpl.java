@@ -4,12 +4,14 @@ import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
 import com.neemiasgabriel.processpayroll.dto.EnterpriseDto;
 import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
+import com.neemiasgabriel.processpayroll.exeception.MissingDataException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
 import com.neemiasgabriel.processpayroll.model.Enterprise;
 import com.neemiasgabriel.processpayroll.model.PayrollUser;
 import com.neemiasgabriel.processpayroll.repository.EnterpriseRepository;
 import com.neemiasgabriel.processpayroll.repository.PayrollUserRepository;
+import com.neemiasgabriel.processpayroll.validators.EnterpriseValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
   private final EnterpriseRepository enterpriseRepository;
   private final PayrollUserRepository payrollUserRepository;
+  private final EnterpriseValidator enterpriseValidator;
 
   @Override
   public EnterpriseDto getById(Long id) {
@@ -39,8 +42,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
   @Override
   @Transactional
-  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException {
-    if (validateEnterpriseRegister(enterprise)) {
+  public void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException, MissingDataException {
+    if (enterpriseValidator.validateEnterpriseRegister(enterprise)) {
       if (enterpriseRepository.existsByCnpj(enterprise.getCnpj())) {
         throw new DataAlreadyExistsException("CNPJ already exists");
       }
