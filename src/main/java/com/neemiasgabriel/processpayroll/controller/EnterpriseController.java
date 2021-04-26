@@ -29,9 +29,9 @@ public class EnterpriseController {
   public ResponseEntity<Object> processPayroll(@PathVariable("id") Long enterpriseId) {
     try {
       enterpriseService.processPayroll(enterpriseId);
-      return new ResponseEntity<Object>("Payroll processed with success", HttpStatus.OK);
+      return new ResponseEntity<>("Payroll processed with success", HttpStatus.OK);
     } catch (DataNotFoundException e) {
-      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -39,22 +39,27 @@ public class EnterpriseController {
   public ResponseEntity<Object> registerEnterprise(@RequestBody EnterpriseDto enterprise) {
     try {
       enterpriseService.register(enterprise);
-      return new ResponseEntity<Object>("Enterprise registered with success", HttpStatus.OK);
+      return new ResponseEntity<>("Enterprise registered with success", HttpStatus.OK);
     } catch (PatternNotMatcheException | DataAlreadyExistsException | DataNotFoundException | MissingDataException e) {
-      return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
   @GetMapping("/getBalance/{id}")
-  public Double getBalance(@PathVariable("id") Long enterpriseId) {
-    return enterpriseService.getBalanceById(enterpriseId);
+  public ResponseEntity<Object> getBalance(@PathVariable("id") Long enterpriseId) {
+    try {
+      return new ResponseEntity<>(enterpriseService.getBalanceById(enterpriseId), HttpStatus.OK);
+    } catch (DataNotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping("/getEnterprise/{id}")
   public ResponseEntity<Object> getById(@PathVariable("id") Long enterpriseId) {
-    EnterpriseDto dto = enterpriseService.getById(enterpriseId);
-    return dto != null
-      ? new ResponseEntity<Object>(dto, HttpStatus.OK)
-      : new ResponseEntity<Object>("Enterprise not found", HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(enterpriseService.getById(enterpriseId), HttpStatus.OK);
+    } catch (DataNotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+    }
   }
 }
