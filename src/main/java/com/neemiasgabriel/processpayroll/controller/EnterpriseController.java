@@ -59,7 +59,7 @@ public class EnterpriseController {
     try {
       return new ResponseEntity<>(enterpriseService.getById(enterpriseId), HttpStatus.OK);
     } catch (DataNotFoundException e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 }
