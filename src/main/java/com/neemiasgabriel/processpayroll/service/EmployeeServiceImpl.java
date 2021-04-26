@@ -17,8 +17,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   @Transactional
   public void register(EmployeeDto emp) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException, MissingDataException {
-    if (employeeValidator.validateEmpolyeeRegister(emp)) {
+    if (employeeValidator.validateEmployeeRegister(emp)) {
       if (employeeRepository.existsByCpf(emp.getCpf())) {
         throw new DataAlreadyExistsException("CPF already exists");
       }
