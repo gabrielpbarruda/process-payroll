@@ -51,22 +51,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
   }
 
-  private boolean validateEmpolyeeRegister(EmployeeDto e) {
-    if (e != null) {
-      Pattern pattern = Pattern.compile("^\\d{3}\\x2E\\d{3}\\x2E\\d{3}\\x2D\\d{2}$");
-      Matcher matcher = pattern.matcher(e.getCpf());
-
-      return matcher.matches() &&
-        !e.getName().isEmpty() &&
-        !e.getCpf().isEmpty() &&
-        !e.getEmail().isEmpty() &&
-        e.getBirthday() != null &&
-        e.getWage() >= 0d;
-    }
-
-    return false;
-  }
-
   @Override
   public Double getBalanceByEmployeeId(Long employeeId) throws DataNotFoundException {
     Optional<Employee> employee = employeeRepository.findById(employeeId);
