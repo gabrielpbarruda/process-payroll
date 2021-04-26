@@ -3,6 +3,7 @@ package com.neemiasgabriel.processpayroll.controller;
 import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
 import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
+import com.neemiasgabriel.processpayroll.exeception.MissingDataException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class EmployeeController {
     try {
       employeeService.register(employee);
       return new ResponseEntity<Object>("Employee registered with success", HttpStatus.OK);
-    } catch (PatternNotMatcheException | DataAlreadyExistsException | DataNotFoundException e) {
+    } catch (PatternNotMatcheException | DataAlreadyExistsException | DataNotFoundException | MissingDataException e) {
       return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }

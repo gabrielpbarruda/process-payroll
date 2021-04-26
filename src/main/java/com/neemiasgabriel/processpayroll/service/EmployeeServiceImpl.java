@@ -3,11 +3,13 @@ package com.neemiasgabriel.processpayroll.service;
 import com.neemiasgabriel.processpayroll.dto.EmployeeDto;
 import com.neemiasgabriel.processpayroll.exeception.DataAlreadyExistsException;
 import com.neemiasgabriel.processpayroll.exeception.DataNotFoundException;
+import com.neemiasgabriel.processpayroll.exeception.MissingDataException;
 import com.neemiasgabriel.processpayroll.exeception.PatternNotMatcheException;
 import com.neemiasgabriel.processpayroll.model.Employee;
 import com.neemiasgabriel.processpayroll.model.Enterprise;
 import com.neemiasgabriel.processpayroll.repository.EmployeeRepository;
 import com.neemiasgabriel.processpayroll.repository.EnterpriseRepository;
+import com.neemiasgabriel.processpayroll.validators.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,12 @@ public class EmployeeServiceImpl implements EmployeeService {
   private final EmployeeRepository employeeRepository;
   private final PayrollUserService payrollUserService;
   private final EnterpriseRepository enterpriseRepository;
+  private final EmployeeValidator employeeValidator;
 
   @Override
   @Transactional
-  public void register(EmployeeDto emp) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException {
-    if (validateEmpolyeeRegister(emp)) {
+  public void register(EmployeeDto emp) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException, MissingDataException {
+    if (employeeValidator.validateEmpolyeeRegister(emp)) {
       if (employeeRepository.existsByCpf(emp.getCpf())) {
         throw new DataAlreadyExistsException("CPF already exists");
       }
