@@ -80,7 +80,6 @@ public class DbInitializer implements CommandLineRunner {
     taffarel.setBirthday(c.getTime());
     taffarel.setAccount(accountRepository.findByAccountNumberAndAgency("456789-1", "000001").orElse(null));
 
-
     c.set(1963, Calendar.OCTOBER,31);
     PayrollUser dunga = new PayrollUser("dunga", "dunga123", "ROLE_USER");
     dunga.setName("Dunga");
@@ -104,7 +103,6 @@ public class DbInitializer implements CommandLineRunner {
     rivaldo.setCpf("312.456.670-04");
     rivaldo.setBirthday(c.getTime());
     rivaldo.setAccount(accountRepository.findByAccountNumberAndAgency("789123-1", "000001").orElse(null));
-
 
     payrollUserRepository.saveAll(List.of(pele, john, mussum, taffarel, dunga, romario, rivaldo));
   }
@@ -152,7 +150,6 @@ public class DbInitializer implements CommandLineRunner {
     taffarel.setReferenceAccount("456789-1");
     taffarel.setReferenceAgency("000001");
     taffarel.setWage(3000.0);
-
 
     c.set(1963, Calendar.OCTOBER,31);
     Employee dunga = new Employee("Dunga", "321.654.987-02", c.getTime(), "dunga@email.com");

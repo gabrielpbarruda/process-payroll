@@ -58,17 +58,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
   }
 
-  private boolean validateEnterpriseRegister(EnterpriseDto e) {
-    if (e != null) {
-      Pattern pattern = Pattern.compile("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$");
-      Matcher matcher = pattern.matcher(e.getCnpj());
-
-      return matcher.matches() && !e.getName().isEmpty() && !e.getCnpj().isEmpty() && !e.getEmail().isEmpty();
-    }
-
-    return false;
-  }
-
   private Enterprise setFields(EnterpriseDto dto) {
     Enterprise enterprise = new Enterprise(dto.getName(), dto.getFantasyName(), dto.getCnpj(), dto.getEmail(), dto.getPayrollUserId());
     enterprise.setAccountBalance(dto.getAccountBalance());
