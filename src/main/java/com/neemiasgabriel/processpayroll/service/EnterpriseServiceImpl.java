@@ -19,8 +19,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +30,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   private final EnterpriseValidator enterpriseValidator;
 
   @Override
-  public EnterpriseDto getById(Long id) {
-    Enterprise e = enterpriseRepository.findById(id).get();
+  public EnterpriseDto getById(Long id) throws DataNotFoundException {
+    Enterprise e = enterpriseRepository.findById(id)
+        .orElseThrow(() -> new DataNotFoundException("Enterprise not found"));
     EnterpriseDto eDto = new EnterpriseDto(e.getId(), e.getName(), e.getFantasyName(), e.getEmail(), e.getCnpj(), e.getAccountBalance(), e.getOwnerId());
     eDto.setEmployees(convertToEmployeesDto(e));
 
@@ -66,12 +65,10 @@ public class EnterpriseServiceImpl implements EnterpriseService {
   }
 
   @Override
-  public Double getBalanceById(Long enterpriseId) {
-    Optional<Enterprise> enterprise = enterpriseRepository.findById(enterpriseId);
-
-    return enterprise.isPresent()
-      ? enterprise.get().getAccountBalance()
-      : null;
+  public Double getBalanceById(Long enterpriseId) throws DataNotFoundException {
+    return enterpriseRepository.findById(enterpriseId)
+      .map(Enterprise::getAccountBalance)
+      .orElseThrow(() -> new DataNotFoundException("It was not possible to find the enterprise"));
   }
 
   @Override
@@ -85,8 +82,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
           ent.getEmail(),
           ent.getCnpj(),
           ent.getAccountBalance(),
-          ent.getOwnerId()
-        );
+          ent.getOwnerId());
 
         enDto.setEmployees(convertToEmployeesDto(ent));
 
@@ -103,7 +99,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
       Enterprise enterprise = enterpriseOpt.get();
       Set<Employee> employees = enterprise.getEmployees();
 
-      Double totalWage = employees.stream().map(emp -> emp.getWage()).reduce(0.0, Double::sum);
+      Double totalWage = employees.stream().map(Employee::getWage).reduce(0.0, Double::sum);
       Double reducedBalance = totalWage + (totalWage * 0.038);
       Double balance = enterprise.getAccountBalance();
 
@@ -123,8 +119,8 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
   public Set<EmployeeDto> convertToEmployeesDto(Enterprise ent) {
     return ent.getEmployees().stream()
-      .map(emp -> {
-        return new EmployeeDto(
+      .map(emp ->
+        new EmployeeDto(
           emp.getId(),
           emp.getName(),
           emp.getCpf(),
@@ -133,7 +129,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
           emp.getReferenceAccount(),
           emp.getReferenceAgency(),
           emp.getWage(),
-          ent.getId());
-      }).collect(Collectors.toSet());
+          ent.getId())
+      ).collect(Collectors.toSet());
   }
 }

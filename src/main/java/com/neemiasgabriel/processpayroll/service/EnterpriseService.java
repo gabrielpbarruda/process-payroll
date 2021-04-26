@@ -13,11 +13,11 @@ import java.util.Set;
 
 public interface EnterpriseService {
 
-  EnterpriseDto getById(Long id);
+  EnterpriseDto getById(Long id) throws DataNotFoundException;
 
   void register(EnterpriseDto enterprise) throws PatternNotMatcheException, DataAlreadyExistsException, DataNotFoundException, MissingDataException;
 
-  Double getBalanceById(Long enterpriseId);
+  Double getBalanceById(Long enterpriseId) throws DataNotFoundException;
 
   List<EnterpriseDto> getAllEnterprises();
 
